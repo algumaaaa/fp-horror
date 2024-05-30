@@ -39,15 +39,11 @@ AMain::AMain()
 
 	ArmOffset = CameraBoom->GetRelativeLocation().X;
 	SwayThreshhold = .5f;
-	ADSAnimProg = 0;
+	AnimPosADS = 0;
 
-	bIsRunning = false;
-	bIsReadyingGun = false;
-	bCanShoot = false;
-	bIsReloading = false;
-
+	QueuedInput = -1;
+	bIsAimPressed = false;
 	CurrState = IdleWalk;
-
 	LoadedBullets = 6;
 	Ammo = 30;
 }
@@ -61,7 +57,7 @@ void AMain::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	// Is there a way to do this using signals? Probably doesnt matter much performance wise
-	if (bIsReadyingGun || ADSAnimProg > 0) AnimateAimDownSight(bIsReadyingGun);
+	if (GetCurrentState() == Aim || AnimPosADS > 0) AnimateAimDownSight(bIsStateAim);
 }
 
 void AMain::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -85,44 +81,41 @@ void AMain::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AMain::OnFire()
 {
-	if (LoadedBullets > 0 && bCanShoot && AnimInstance != nullptr) {
-		AnimInstance->JumpToNode("Shoot");
-		LoadedBullets -= 1;
-	}
+	if (CanEnterState(Fire)) ChangeState(Fire);
 }
 
 void AMain::OnReload()
 {
-	if (!bIsReloading && bCanShoot && AnimInstance != nullptr){
-		AnimInstance->JumpToNode("Reload");
-		bIsReloading = true;
-	}
+	if (CanEnterState(Reload)) ChangeState(Reload);
 }
 
 void AMain::OnAim()
-{
-	bIsReadyingGun = true;
-	GetCharacterMovement()->MaxWalkSpeed = 150.f;
+{	
+	bIsAimPressed = true;
+	if (CanEnterState(Aim)) {
+		ChangeState(Aim);
+	} 
+	else QueuedInput = 4;
 }
 
 void AMain::StopAiming()
-{
-	bIsReadyingGun = false;
-	GetCharacterMovement()->MaxWalkSpeed = 300.f;
+{	
+	bIsAimPressed = false;
+	if (CanEnterState(IdleWalk)) {
+		ChangeState(IdleWalk);
+	}
+	else QueuedInput = 1;
 }
 
 void AMain::OnRun()
 {
-	if (bCanShoot || bIsReadyingGun) return;
-	GetCharacterMovement()->MaxWalkSpeed = 600.f;
-	bIsRunning = true;
+	if (CanEnterState(Run)) ChangeState(Run);
 }
 
 void AMain::StopRunning()
 {
-	if (bCanShoot || bIsReadyingGun) return;
-	GetCharacterMovement()->MaxWalkSpeed = 300.f;
-	bIsRunning = false;
+	if (GetCurrentState() == Aim) return;
+	if (CanEnterState(IdleWalk)) ChangeState(IdleWalk);
 }
 
 void AMain::MoveForward(float Value)
@@ -145,7 +138,21 @@ void AMain::TurnAtRate(float Rate)
 {
 	float DeltaTime = GetWorld()->GetDeltaSeconds();
 	AddControllerYawInput(Rate * TurnRate * DeltaTime);
-	// Move this down to a look offset func
+	AnimateLookOffset(Rate);
+}
+
+void AMain::LookAtRate(float Rate)
+{
+	AddControllerPitchInput(Rate * LookUpRate * GetWorld()->GetDeltaSeconds());
+}
+
+///////////////
+/* ANIMATION */
+///////////////
+
+void AMain::AnimateLookOffset(float Rate)
+{
+	float DeltaTime = GetWorld()->GetDeltaSeconds();
 	FVector CamLoc = CameraBoom->GetRelativeLocation();
 	float ReturnStrenght = abs(CamLoc.X - ArmOffset);
 	if (Rate > SwayThreshhold) {
@@ -162,44 +169,96 @@ void AMain::TurnAtRate(float Rate)
 	}
 }
 
-void AMain::LookAtRate(float Rate)
-{
-	AddControllerPitchInput(Rate * LookUpRate * GetWorld()->GetDeltaSeconds());
-}
-
-// TODO: Move this down to a gun script?
 void AMain::AnimateGunSway(float Rate)
 {
 	FVector CurrLoc = GunFlipbook->GetRelativeLocation();
-	if (AnimPos < 1) { 
+	if (AnimPosGunSway < 1) { 
 		GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X - Rate*.1f, CurrLoc.Y, CurrLoc.Z + Rate*.07f)); 
 		}
-	else if (AnimPos < 2) { 
+	else if (AnimPosGunSway < 2) { 
 		GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X - Rate*.1f, CurrLoc.Y, CurrLoc.Z - Rate*.07f));
 		}
-	else if (AnimPos < 3) { 
+	else if (AnimPosGunSway < 3) { 
 		GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X + Rate*.1f, CurrLoc.Y, CurrLoc.Z + Rate*.07f));
 		}
-	else if (AnimPos < 4) { 
+	else if (AnimPosGunSway < 4) { 
 		GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X + Rate*.1f, CurrLoc.Y, CurrLoc.Z - Rate*.07f));
 		}
-	else AnimPos = 0;
-	AnimPos += 2 * Rate * GetWorld()->GetDeltaSeconds();
+	else AnimPosGunSway = 0;
+	AnimPosGunSway += 2 * Rate * GetWorld()->GetDeltaSeconds();
 }
 
 void AMain::AnimateAimDownSight(bool bToggle)
 {
-	if (bToggle && ADSAnimProg >= 1) return;
+	if (bToggle && AnimPosADS >= 1) return;
 	FVector CurrLoc = GunFlipbook->GetRelativeLocation();
-	float OffsetY = .02f * float(Global::EaseOutExpo(double(ADSAnimProg)));
+	float OffsetY = .02f * float(Global::EaseOutExpo(double(AnimPosADS)));
 	OffsetY = bToggle ? OffsetY : OffsetY * -1;
 	if (bToggle) {
-		ADSAnimProg += 1 * GetWorld()->GetDeltaSeconds();
+		AnimPosADS += 1 * GetWorld()->GetDeltaSeconds();
 	}
-	else if (ADSAnimProg > 0) {
-		ADSAnimProg -= 1 * GetWorld()->GetDeltaSeconds();
+	else if (AnimPosADS > 0) {
+		AnimPosADS -= 1 * GetWorld()->GetDeltaSeconds();
 	}
 	ArmOffset += OffsetY;
 	GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X, CurrLoc.Y - OffsetY, CurrLoc.Z));
 }
 
+///////////////////
+/* STATE MACHINE */
+///////////////////
+
+void AMain::ChangeState(int Value)
+{
+	bIsStateIdleWalk = false;
+	bIsStateAim = false;
+	switch(Value) {
+		case IdleWalk:
+			bIsStateIdleWalk = true;
+			AnimInstance->JumpToNode("Out");
+			GetCharacterMovement()->MaxWalkSpeed = 300.f;
+			break;
+		case Run:
+			GetCharacterMovement()->MaxWalkSpeed = 600.f;
+			break;
+		case Aim:
+			bIsStateAim = true;
+			GetCharacterMovement()->MaxWalkSpeed = 150.f;
+			break;
+		case Fire:
+			AnimInstance->JumpToNode("Shoot");
+			LoadedBullets -= 1;
+			break;
+		case Reload:
+			AnimInstance->JumpToNode("Reload");
+			break;
+	}
+	CurrState = Value;
+}
+
+bool AMain::CanEnterState(int Value)
+{
+	switch (Value) {
+		case IdleWalk:
+			if (CurrState <= Aim) return true;
+			break;
+		case Run:
+			if (CurrState == IdleWalk) return true;
+			break;
+		case Aim:
+			if (CurrState <= Aim) return true;
+			break;
+		case Fire:
+			if (CurrState == Aim && LoadedBullets > 0 && AnimInstance != nullptr) return true;
+			break;
+		case Reload:
+			if (CurrState == Aim && Ammo > 0 && LoadedBullets < 6 && AnimInstance != nullptr) return true;
+			break;
+	}
+	return false;
+}
+
+int AMain::GetCurrentState()
+{
+	return CurrState;
+}
