@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "SpriteEffect.h"
 #include "Main.generated.h"
 
 UCLASS()
@@ -22,25 +23,22 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprite")
 	class UPaperZDAnimInstance* AnimInstance;
-
 	UPROPERTY(VisibleDefaultsOnly, Category = "Sprite")
 	class UPaperFlipbookComponent* GunFlipbook;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprite")
 	FVector GunOffset;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Sprite")
+	TSubclassOf<ASpriteEffect> SpriteEffect;
 	
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
 	class USceneComponent* MuzzleLocation;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	class UCameraComponent* FirstPersonCamera;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	float TurnRate;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	float LookUpRate;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	class USpringArmComponent* CameraBoom;
 	
@@ -48,7 +46,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	int LoadedBullets;
-	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	int Ammo;
 
@@ -56,19 +53,14 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
 	void ChangeState(int Value);
-	
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
 	int GetCurrentState();
-	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	bool bIsStateIdleWalk;
-	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	bool bIsStateAim;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	int QueuedInput;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gameplay")
 	bool bIsAimPressed;
 

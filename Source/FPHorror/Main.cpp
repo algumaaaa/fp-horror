@@ -8,6 +8,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "PaperZDAnimInstance.h"
+#include "DrawDebugHelpers.h"
+#include "SpriteEffect.h"
 
 
 AMain::AMain()
@@ -81,7 +83,26 @@ void AMain::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AMain::OnFire()
 {
-	if (CanEnterState(Fire)) ChangeState(Fire);
+	if (CanEnterState(Fire)) {
+		ChangeState(Fire);
+
+		// Linetracing
+		FHitResult HitResult;
+		FVector Start = FirstPersonCamera->GetComponentLocation();
+		FVector Forward = FirstPersonCamera->GetForwardVector();
+		FVector End = Start + Forward * 20000.f;
+
+		GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility);
+		
+		// Bullet hole
+		if (HitResult.bBlockingHit && SpriteEffect != nullptr) {
+			const FVector Loc = HitResult.Location + HitResult.Normal;
+			const FRotator Rot = FRotationMatrix::MakeFromY(HitResult.Normal).Rotator();
+			ASpriteEffect* BulletHole = GetWorld()->SpawnActor<ASpriteEffect>(SpriteEffect, Loc, Rot);
+			BulletHole->SetSprite(ASpriteEffect::BulletHole);
+		}
+		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 2);
+	}
 }
 
 void AMain::OnReload()
