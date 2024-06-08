@@ -1,5 +1,21 @@
 [
 	{
+		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\Effects\\SpriteEffect.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
+			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\Effects\\SpriteEffect.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
+			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
 		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\FPHorror.Build.cs",
 		"arguments": [
 			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
@@ -72,6 +88,22 @@
 		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
 	},
 	{
+		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\GameModes\\MainGameMode.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
+			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\GameModes\\MainGameMode.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
+			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
 		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\Global.cpp",
 		"arguments": [
 			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
@@ -81,38 +113,6 @@
 	},
 	{
 		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\Global.h",
-		"arguments": [
-			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
-			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
-		],
-		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
-	},
-	{
-		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\Main.cpp",
-		"arguments": [
-			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
-			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
-		],
-		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
-	},
-	{
-		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\Main.h",
-		"arguments": [
-			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
-			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
-		],
-		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
-	},
-	{
-		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\MainGameMode.cpp",
-		"arguments": [
-			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
-			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
-		],
-		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
-	},
-	{
-		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\MainGameMode.h",
 		"arguments": [
 			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
 			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
@@ -145,6 +145,38 @@
 	},
 	{
 		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\TP_WeaponComponent.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
+			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\Units\\Main.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
+			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\Units\\Main.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
+			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\Units\\Unit.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
+			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.1\\Engine\\Source"
+	},
+	{
+		"file": "C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\Source\\FPHorror\\Units\\Unit.h",
 		"arguments": [
 			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\HostX64\\x64\\cl.exe",
 			"@C:\\Users\\matheus\\Documents\\Projects\\Unreal\\FPHorror\\.vscode\\compileCommands_Default\\FPHorror.257.rsp"
