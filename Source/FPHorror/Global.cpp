@@ -2,6 +2,7 @@
 
 #include "Global.h"
 #include <math.h>
+#include "Engine/GameEngine.h"
 
 double Global::EaseInOutElastic(double x)
 {
@@ -25,4 +26,10 @@ double Global::EaseInOutQuart(double x)
 double Global::EaseOutExpo(double x) 
 {
     return (x == 1) ? 1 : 1 - pow(2, -10 * x);
+}
+
+void Global::Print(FString s)
+{
+    if (GEngine)
+    GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Yellow, s,false);
 }

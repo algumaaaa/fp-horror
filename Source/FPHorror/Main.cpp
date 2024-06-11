@@ -10,6 +10,7 @@
 #include "PaperZDAnimInstance.h"
 #include "DrawDebugHelpers.h"
 #include "SpriteEffect.h"
+#include "Unit.h"
 
 
 AMain::AMain()
@@ -93,9 +94,17 @@ void AMain::OnFire()
 		FVector End = Start + Forward * 20000.f;
 
 		GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility);
+		AActor* ResultActor = HitResult.GetActor();
+		AUnit* ResultUnit = Cast<AUnit>(ResultActor);
+	
+		// Hit unit
+		if (ResultUnit != nullptr) {
+			ResultUnit->ChangeHealth(10);
+			Global::Print(FString::FromInt(ResultUnit->GetHealth()));
+		}
 		
 		// Bullet hole
-		if (HitResult.bBlockingHit && SpriteEffect != nullptr) {
+		else if (HitResult.bBlockingHit && SpriteEffect != nullptr) {
 			const FVector Loc = HitResult.Location + HitResult.Normal;
 			const FRotator Rot = FRotationMatrix::MakeFromY(HitResult.Normal).Rotator();
 			ASpriteEffect* BulletHole = GetWorld()->SpawnActor<ASpriteEffect>(SpriteEffect, Loc, Rot);

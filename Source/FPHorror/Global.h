@@ -8,4 +8,5 @@ public:
 	static double EaseInOutElastic(double x);
 	static double EaseInOutQuart(double x);
 	static double EaseOutExpo(double x);
+	static void Print(FString s);
 };

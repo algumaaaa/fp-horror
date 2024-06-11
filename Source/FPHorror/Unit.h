@@ -16,6 +16,7 @@ public:
 	AUnit();
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
 	void ChangeHealth(int Value);
+	int GetHealth();
 
 protected:
 	virtual void BeginPlay() override;

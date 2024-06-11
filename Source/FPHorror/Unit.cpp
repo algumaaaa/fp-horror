@@ -30,3 +30,8 @@ void AUnit::ChangeHealth(int Value)
 	Health += Value;
 	if (Health < 0) Health = 0;
 }
+
+int AUnit::GetHealth()
+{
+	return Health;
+}
