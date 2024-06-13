@@ -80,6 +80,7 @@ protected:
 	void AnimateLookOffset(float Rate);
 	void AnimateGunSway(float Rate);
 	void AnimateAimDownSight(bool bToggle);
+	FVector SwayOffset;
 	float ArmOffset;
 	float SwayThreshhold;
 	float AnimPosGunSway;

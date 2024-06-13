@@ -40,7 +40,6 @@ AMain::AMain()
 
 	GunOffset = FVector(100.f, 0.f, 10.f);
 
-	ArmOffset = CameraBoom->GetRelativeLocation().X;
 	SwayThreshhold = .5f;
 	AnimPosADS = 0;
 
@@ -54,6 +53,8 @@ AMain::AMain()
 void AMain::BeginPlay()
 {
 	Super::BeginPlay();
+	ArmOffset = CameraBoom->GetRelativeLocation().X;
+	SwayOffset = GunFlipbook->GetRelativeLocation();
 }
 
 void AMain::Tick(float DeltaTime)
@@ -202,20 +203,28 @@ void AMain::AnimateLookOffset(float Rate)
 void AMain::AnimateGunSway(float Rate)
 {
 	FVector CurrLoc = GunFlipbook->GetRelativeLocation();
+	float amtX = Rate * 3.f * GetWorld()->GetDeltaSeconds();
+	float amtZ = Rate * 2.7f * GetWorld()->GetDeltaSeconds();
+	AnimPosGunSway += Rate * GetWorld()->GetDeltaSeconds();
+	
 	if (AnimPosGunSway < 1) { 
-		GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X - Rate*.1f, CurrLoc.Y, CurrLoc.Z + Rate*.07f)); 
+		GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X - amtX, CurrLoc.Y, CurrLoc.Z + amtZ)); 
 		}
 	else if (AnimPosGunSway < 2) { 
-		GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X - Rate*.1f, CurrLoc.Y, CurrLoc.Z - Rate*.07f));
+		GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X - amtX, CurrLoc.Y, CurrLoc.Z - amtZ));
 		}
 	else if (AnimPosGunSway < 3) { 
-		GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X + Rate*.1f, CurrLoc.Y, CurrLoc.Z + Rate*.07f));
+		GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X + amtX, CurrLoc.Y, CurrLoc.Z + amtZ));
 		}
 	else if (AnimPosGunSway < 4) { 
-		GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X + Rate*.1f, CurrLoc.Y, CurrLoc.Z - Rate*.07f));
+		GunFlipbook->SetRelativeLocation(FVector(CurrLoc.X + amtX, CurrLoc.Y, CurrLoc.Z - amtZ));
 		}
-	else AnimPosGunSway = 0;
-	AnimPosGunSway += 2 * Rate * GetWorld()->GetDeltaSeconds();
+	else {
+		AnimPosGunSway = 0;
+		FVector NewLoc = SwayOffset;
+		NewLoc.Y -= ArmOffset;
+		GunFlipbook->SetRelativeLocation(NewLoc);
+	}
 }
 
 void AMain::AnimateAimDownSight(bool bToggle)
