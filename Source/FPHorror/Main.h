@@ -48,6 +48,8 @@ public:
 	int LoadedBullets;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Gameplay")
 	int Ammo;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Gameplay")
+	float CrosshairOffset;
 
 	/* STATE MACHINE */
 	
@@ -71,6 +73,7 @@ protected:
 	void OnRun();
 	void StopRunning();
 	void StopAiming();
+	void ChangeCrosshairOffset(float Value);
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 	void TurnAtRate(float Rate);

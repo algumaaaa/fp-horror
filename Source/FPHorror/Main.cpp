@@ -48,6 +48,7 @@ AMain::AMain()
 	CurrState = IdleWalk;
 	LoadedBullets = 6;
 	Ammo = 30;
+	CrosshairOffset = 0.f;
 }
 
 void AMain::BeginPlay()
@@ -62,6 +63,7 @@ void AMain::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	// Is there a way to do this using signals? Probably doesnt matter much performance wise
 	if (GetCurrentState() == Aim || AnimPosADS > 0) AnimateAimDownSight(bIsStateAim);
+	CrosshairOffset = CrosshairOffset > 0.f ? CrosshairOffset -= 30.f * GetWorld()->GetDeltaSeconds() : 0.f;
 }
 
 void AMain::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -87,6 +89,8 @@ void AMain::OnFire()
 {
 	if (CanEnterState(Fire)) {
 		ChangeState(Fire);
+		// TODO: Change value to var exposed to editor
+		ChangeCrosshairOffset(100);
 
 		// Linetracing
 		FHitResult HitResult;
@@ -125,6 +129,8 @@ void AMain::OnAim()
 	bIsAimPressed = true;
 	if (CanEnterState(Aim)) {
 		ChangeState(Aim);
+		// TODO: Change value to var exposed to editor
+		ChangeCrosshairOffset(50);
 	} 
 	else QueuedInput = 4;
 }
@@ -154,6 +160,8 @@ void AMain::MoveForward(float Value)
 	if (Value == 0.f) return;
 	AddMovementInput(GetActorForwardVector(), Value);
 	AnimateGunSway(GetCharacterMovement()->MaxWalkSpeed / 300.f);
+	// TODO: Change value to var exposed to editor
+	ChangeCrosshairOffset(25*GetWorld()->GetDeltaSeconds());
 }
 
 void AMain::MoveRight(float Value)
@@ -162,6 +170,8 @@ void AMain::MoveRight(float Value)
 	AddMovementInput(GetActorRightVector(), Value);
 	if (GetInputAxisValue("MoveForward") == 0.f) {
 		AnimateGunSway(GetCharacterMovement()->MaxWalkSpeed / 300.f);
+		// TODO: Change value to var exposed to editor
+		ChangeCrosshairOffset(25*GetWorld()->GetDeltaSeconds());
 	}
 }
 
@@ -175,6 +185,14 @@ void AMain::TurnAtRate(float Rate)
 void AMain::LookAtRate(float Rate)
 {
 	AddControllerPitchInput(Rate * LookUpRate * GetWorld()->GetDeltaSeconds());
+}
+
+void AMain::ChangeCrosshairOffset(float Value)
+{
+	const float MAX_CROSSHAIR_OFFSET = 100.f;
+
+	CrosshairOffset = CrosshairOffset + Value > MAX_CROSSHAIR_OFFSET ? MAX_CROSSHAIR_OFFSET : CrosshairOffset + Value;
+	Global::Print(FString::SanitizeFloat(CrosshairOffset));
 }
 
 ///////////////
