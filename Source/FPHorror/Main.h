@@ -3,8 +3,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "SpriteEffect.h"
 #include "Main.generated.h"
+
+class ASpriteEffect;
+class UCameraShakeBase;
 
 UCLASS()
 class FPHORROR_API AMain : public ACharacter
@@ -27,7 +29,8 @@ public:
 	class UPaperFlipbookComponent* GunFlipbook;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprite")
 	FVector GunOffset;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Sprite")
+	// TODO: Set this in editor, not blueprint? if so remove bpereadwrite
+	UPROPERTY(EditAnywhere, Category = "Sprite")
 	TSubclassOf<ASpriteEffect> SpriteEffect;
 	
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
@@ -41,6 +44,8 @@ public:
 	float LookUpRate;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	class USpringArmComponent* CameraBoom;
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	TSubclassOf<UCameraShakeBase> CameraShake;
 	
 	/* GAMEPLAY */
 

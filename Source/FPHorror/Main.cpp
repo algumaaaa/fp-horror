@@ -91,6 +91,7 @@ void AMain::OnFire()
 		ChangeState(Fire);
 		// TODO: Change value to var exposed to editor
 		ChangeCrosshairOffset(100);
+		GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayWorldCameraShake(GetWorld(), CameraShake, GetActorLocation(), 0.f, 500.f, 1.f);
 
 		// Linetracing
 		FHitResult HitResult;
@@ -192,7 +193,6 @@ void AMain::ChangeCrosshairOffset(float Value)
 	const float MAX_CROSSHAIR_OFFSET = 100.f;
 
 	CrosshairOffset = CrosshairOffset + Value > MAX_CROSSHAIR_OFFSET ? MAX_CROSSHAIR_OFFSET : CrosshairOffset + Value;
-	Global::Print(FString::SanitizeFloat(CrosshairOffset));
 }
 
 ///////////////
