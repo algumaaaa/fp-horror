@@ -89,14 +89,15 @@ void AMain::OnFire()
 {
 	if (CanEnterState(Fire)) {
 		ChangeState(Fire);
-		// TODO: Change value to var exposed to editor
-		ChangeCrosshairOffset(100);
-		GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayWorldCameraShake(GetWorld(), CameraShake, GetActorLocation(), 0.f, 500.f, 1.f);
 
 		// Linetracing
 		FHitResult HitResult;
 		FVector Start = FirstPersonCamera->GetComponentLocation();
 		FVector Forward = FirstPersonCamera->GetForwardVector();
+		float RandY = FMath::RandRange(-0.6f, 0.6f) * (CrosshairOffset/100) + 1.f;
+		float RandZ = FMath::RandRange(-0.6f, 0.6f) * (CrosshairOffset/100) + 1.f;
+		Forward.Y = Forward.Y * RandY;
+		Forward.Z = Forward.Z * RandZ;
 		FVector End = Start + Forward * 20000.f;
 
 		GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility);
@@ -116,6 +117,11 @@ void AMain::OnFire()
 			ASpriteEffect* BulletHole = GetWorld()->SpawnActor<ASpriteEffect>(SpriteEffect, Loc, Rot);
 			BulletHole->SetSprite(ASpriteEffect::BulletHole);
 		}
+		
+		// TODO: Change value to var exposed to editor
+		ChangeCrosshairOffset(100);
+		GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayWorldCameraShake(GetWorld(), CameraShake, GetActorLocation(), 0.f, 500.f, 1.f);
+		
 		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 2);
 	}
 }
