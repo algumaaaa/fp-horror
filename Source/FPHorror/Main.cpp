@@ -36,7 +36,7 @@ AMain::AMain()
 
 	MuzzleLocation = CreateDefaultSubobject<USceneComponent>(TEXT("Muzzle Location"));
 	MuzzleLocation->SetupAttachment(FirstPersonCamera);
-	MuzzleLocation->SetRelativeLocation(FVector(0.2f, 48.4f, -10.6f));
+	MuzzleLocation->SetRelativeLocation(FVector(52.1f, 16.3f, .6f));
 
 	GunOffset = FVector(100.f, 0.f, 10.f);
 
@@ -117,6 +117,14 @@ void AMain::OnFire()
 			ASpriteEffect* BulletHole = GetWorld()->SpawnActor<ASpriteEffect>(SpriteEffect, Loc, Rot);
 			BulletHole->SetSprite(ASpriteEffect::BulletHole);
 		}
+
+		// Muzzle flash
+		FVector Loc = MuzzleLocation->GetComponentLocation();
+		FRotator Rot = MuzzleLocation->GetComponentRotation();
+		Rot.Yaw += 90.f;
+		ASpriteEffect* MuzzleFlash = GetWorld()->SpawnActor<ASpriteEffect>(SpriteEffect, Loc, Rot);
+		MuzzleFlash->SetSprite(ASpriteEffect::MuzzleFlash);
+		MuzzleFlash->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform, "NAME_none");
 		
 		// TODO: Change value to var exposed to editor
 		ChangeCrosshairOffset(100);

@@ -15,13 +15,19 @@ public:
 	ASpriteEffect();
 
 	// Must be a cleaner way to do these references, but TArray doesnt work cause this is a great engine
-	UPROPERTY(BlueprintReadWrite, Category = "Sprite")
+	UPROPERTY(EditAnywhere, Category = "Sprite")
 	class UPaperFlipbook* SpriteBulletHole;
+	UPROPERTY(EditAnywhere, Category = "Sprite")
+	class UPaperFlipbook* SpriteMuzzleFlash;
 	UFUNCTION(BlueprintCallable, Category = "Sprite")
 	void SetSprite(int Value);
 
+	void OnTimerTimeOut();
+	FTimerHandle AnimationTimer;
+
 	enum SpriteName {
 		BulletHole = 1,
+		MuzzleFlash = 2,
 	};
 
 protected:
