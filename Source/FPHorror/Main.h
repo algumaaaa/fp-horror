@@ -29,7 +29,6 @@ public:
 	class UPaperFlipbookComponent* GunFlipbook;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprite")
 	FVector GunOffset;
-	// TODO: Set this in editor, not blueprint? if so remove bpereadwrite
 	UPROPERTY(EditAnywhere, Category = "Sprite")
 	TSubclassOf<ASpriteEffect> SpriteEffect;
 	

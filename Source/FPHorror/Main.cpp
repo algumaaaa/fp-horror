@@ -11,6 +11,7 @@
 #include "DrawDebugHelpers.h"
 #include "SpriteEffect.h"
 #include "Unit.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 AMain::AMain()
@@ -94,10 +95,8 @@ void AMain::OnFire()
 		FHitResult HitResult;
 		FVector Start = FirstPersonCamera->GetComponentLocation();
 		FVector Forward = FirstPersonCamera->GetForwardVector();
-		float RandY = FMath::RandRange(-0.6f, 0.6f) * (CrosshairOffset/100) + 1.f;
-		float RandZ = FMath::RandRange(-0.6f, 0.6f) * (CrosshairOffset/100) + 1.f;
-		Forward.Y = Forward.Y * RandY;
-		Forward.Z = Forward.Z * RandZ;
+		Forward = UKismetMathLibrary::RandomUnitVectorInConeInDegrees(Forward, 10 * (CrosshairOffset/100));
+
 		FVector End = Start + Forward * 20000.f;
 
 		GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility);
