@@ -14,12 +14,20 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	AUnit();
+	
+	UPROPERTY(VisibleDefaultsOnly, Category = "Sprite")
+	class UPaperFlipbookComponent* UnitFlipbook;
+	
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
 	void ChangeHealth(int Value);
 	int GetHealth();
 
 protected:
 	virtual void BeginPlay() override;
+
+	FRotator GetRotationTowardsPlayer();
+	void UnitFacePlayer();
+	void SpriteFacePlayer();
 
 	int Health;
 

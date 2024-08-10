@@ -105,7 +105,7 @@ void AMain::OnFire()
 	
 		// Hit unit
 		if (ResultUnit != nullptr) {
-			ResultUnit->ChangeHealth(10);
+			ResultUnit->ChangeHealth(-10);
 			Global::Print(FString::FromInt(ResultUnit->GetHealth()));
 		}
 		
