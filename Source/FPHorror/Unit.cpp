@@ -2,6 +2,7 @@
 #include "Unit.h"
 #include "PaperFlipbookComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Global.h"
 
 AUnit::AUnit()
 {
@@ -11,6 +12,8 @@ AUnit::AUnit()
 	UnitFlipbook->SetupAttachment(GetRootComponent());
 	
 	Health = 100.f;
+	LastSpriteOutput = -1;
+	bIsSpriteFlipped = false;
 }
 
 void AUnit::BeginPlay()
@@ -24,12 +27,12 @@ void AUnit::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	//UnitFacePlayer();
 	SpriteFacePlayer();
+	SpriteOrientFromPlayer();
 }
 
 void AUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void AUnit::ChangeHealth(int Value)
@@ -60,5 +63,42 @@ void AUnit::UnitFacePlayer()
 
 void AUnit::SpriteFacePlayer()
 {
-	UnitFlipbook->SetRelativeRotation(GetRotationTowardsPlayer());
+	FRotator RotToPlayer = GetRotationTowardsPlayer();
+	if (bIsSpriteFlipped) RotToPlayer.Yaw -= 180;
+	UnitFlipbook->SetRelativeRotation(RotToPlayer);
+}
+
+void AUnit::SpriteOrientFromPlayer()
+{
+	FRotator CamRot = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation();
+	FVector CamForwardVec = UKismetMathLibrary::GetForwardVector(CamRot);
+	FVector UnitForwardVec = GetActorForwardVector();
+	FVector UnitRightVec = GetActorRightVector();
+	float RightDot = FVector::DotProduct(UnitRightVec, CamForwardVec);
+	float ForwardDot = FVector::DotProduct(UnitForwardVec, CamForwardVec);
+	int SpriteOutput = 0;
+
+	if (ForwardDot < -0.85) {
+		SpriteOutput = 0;
+	}
+	else if (ForwardDot > 0.85) {
+		SpriteOutput = 4;
+	}
+	else {
+		bIsSpriteFlipped = RightDot < 0;
+
+		if (abs(ForwardDot) < 0.3) {
+			SpriteOutput = 2;
+		}
+		else if (ForwardDot < 0) {
+			SpriteOutput = 1;
+		}
+		else {
+			SpriteOutput = 3;
+		}
+	}
+	if (SpriteOutput != LastSpriteOutput) {
+		LastSpriteOutput = SpriteOutput;
+		UnitFlipbook->SetFlipbook(SpritesIdle[SpriteOutput]);
+	}
 }

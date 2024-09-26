@@ -5,6 +5,8 @@
 #include "GameFramework/Character.h"
 #include "Unit.generated.h"
 
+class UPaperFlipbook;
+
 UCLASS()
 class FPHORROR_API AUnit : public ACharacter
 {
@@ -22,13 +24,19 @@ public:
 	void ChangeHealth(int Value);
 	int GetHealth();
 
+	UPROPERTY(EditAnywhere, Category = "Sprite")
+	TArray<UPaperFlipbook*> SpritesIdle;
+
 protected:
 	virtual void BeginPlay() override;
 
 	FRotator GetRotationTowardsPlayer();
 	void UnitFacePlayer();
 	void SpriteFacePlayer();
+	void SpriteOrientFromPlayer();
 
 	int Health;
+	int LastSpriteOutput;
+	bool bIsSpriteFlipped;
 
 };
