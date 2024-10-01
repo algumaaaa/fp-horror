@@ -89,7 +89,7 @@ void AMain::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AMain::OnFire()
 {
 	if (CanEnterState(Fire)) {
-		ChangeState(Fire);
+		ChangeToState(Fire);
 
 		// Linetracing
 		FHitResult HitResult;
@@ -105,7 +105,7 @@ void AMain::OnFire()
 	
 		// Hit unit
 		if (ResultUnit != nullptr) {
-			ResultUnit->ChangeHealth(-10);
+			ResultUnit->HurtUnit(51);
 			Global::Print(FString::FromInt(ResultUnit->GetHealth()));
 		}
 		
@@ -135,14 +135,14 @@ void AMain::OnFire()
 
 void AMain::OnReload()
 {
-	if (CanEnterState(Reload)) ChangeState(Reload);
+	if (CanEnterState(Reload)) ChangeToState(Reload);
 }
 
 void AMain::OnAim()
 {	
 	bIsAimPressed = true;
 	if (CanEnterState(Aim)) {
-		ChangeState(Aim);
+		ChangeToState(Aim);
 		// TODO: Change value to var exposed to editor
 		ChangeCrosshairOffset(50);
 	} 
@@ -153,20 +153,20 @@ void AMain::StopAiming()
 {	
 	bIsAimPressed = false;
 	if (CanEnterState(IdleWalk)) {
-		ChangeState(IdleWalk);
+		ChangeToState(IdleWalk);
 	}
 	else QueuedInput = 1;
 }
 
 void AMain::OnRun()
 {
-	if (CanEnterState(Run)) ChangeState(Run);
+	if (CanEnterState(Run)) ChangeToState(Run);
 }
 
 void AMain::StopRunning()
 {
 	if (GetCurrentState() == Aim) return;
-	if (CanEnterState(IdleWalk)) ChangeState(IdleWalk);
+	if (CanEnterState(IdleWalk)) ChangeToState(IdleWalk);
 }
 
 void AMain::MoveForward(float Value)
@@ -278,7 +278,7 @@ void AMain::AnimateAimDownSight(bool bToggle)
 /* STATE MACHINE */
 ///////////////////
 
-void AMain::ChangeState(int Value)
+void AMain::ChangeToState(int Value)
 {
 	bIsStateIdleWalk = false;
 	bIsStateAim = false;
@@ -311,19 +311,14 @@ bool AMain::CanEnterState(int Value)
 	switch (Value) {
 		case IdleWalk:
 			if (CurrState <= Aim) return true;
-			break;
 		case Run:
 			if (CurrState == IdleWalk) return true;
-			break;
 		case Aim:
 			if (CurrState <= Aim) return true;
-			break;
 		case Fire:
 			if (CurrState == Aim && LoadedBullets > 0 && AnimInstance != nullptr) return true;
-			break;
 		case Reload:
 			if (CurrState == Aim && Ammo > 0 && LoadedBullets < 6 && AnimInstance != nullptr) return true;
-			break;
 	}
 	return false;
 }

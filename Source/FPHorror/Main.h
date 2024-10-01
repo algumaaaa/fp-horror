@@ -58,7 +58,7 @@ public:
 	/* STATE MACHINE */
 	
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
-	void ChangeState(int Value);
+	void ChangeToState(int Value);
 	UFUNCTION(BlueprintCallable, Category = "Gameplay")
 	int GetCurrentState();
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Gameplay")
